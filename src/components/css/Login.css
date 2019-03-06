@@ -1,0 +1,11 @@
+.parent{
+    flex:1,
+
+}
+.textboxes{
+   flex:1
+}
+.email{
+    flex-direction: column,
+    
+}
