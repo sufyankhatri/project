@@ -49,7 +49,7 @@ const styles = theme => ({
 
 function SignIn(props) {
   const { classes } = props;
-
+ 
   return (
     <main className={classes.main}>
       <CssBaseline />
@@ -89,6 +89,8 @@ function SignIn(props) {
             color="primary"
            // component={Link}
             className={classes.submit}
+         //   to="/SignUp"
+            //onClick={this.SignInPressed()}
           >
             Sign Up
           </Button>
