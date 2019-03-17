@@ -12,7 +12,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Link  } from 'react-router-dom'
+import {loginUser, signUser} from '../actions/AuthActions'
+import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
 //import Link from '@material-ui/core/Link';
 
 const styles = theme => ({
@@ -46,62 +48,95 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
 });
+class SignIn extends React.Component {
+  state={
+    email:"",
+    password:""
+  }
 
-function SignIn(props) {
-  const { classes } = props;
- 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          {/* <LockOutlinedIcon /> */}
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+  onHandleChange=(event)=>{
+    //console.log(event.target.value)
+    //console.log(event.target.value)
+    this.setState({
+      [event.target.id]:event.target.value 
+    })
+    
+    //console.log(value)
+    //  this.props.emailChanged(value)
+    }
+   onPasswordChange=()=>{
+   //   this.props.passwordChanged(text)
+   
+  }
+   onLogInPressed=()=>{
+     const{email,password}=this.state
+     ///console.log(password)
+    this.props.loginUser(email,password)
+     // const {email, password}= this.props
+   // this.props.loginUser(email,password)
+  }
+  
+  render() {
+    const { classes } = this.props;
+    console.log(classes)
+    return (
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            {/* <LockOutlinedIcon /> */}
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign in
+        </Typography>
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <Input  id="email"  type="email" field="email" onChange={this.onHandleChange}  autoComplete="email" value={this.state.email} autoFocus />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input  onChange={this.onHandleChange} name="password" type="password" field="password" id="password" value={this.state.password} autoComplete="current-password"  />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+          //    type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.onLogInPressed}
+            >
+              Sign in
           </Button>
-          <Button
-         //   type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-           // component={Link}
-            className={classes.submit}
-         //   to="/SignUp"
-            //onClick={this.SignInPressed()}
-          >
-            Sign Up
+            <Button
+              //   type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              // component={Link}
+              className={classes.submit}
+            //   to="/SignUp"
+            onClick={()=>{this.props.history.replace('/SignUp')}}
+            >
+              Sign Up
           </Button>
-        </form>
-      </Paper>
-    </main>
-  );
+          </form>
+        </Paper>
+      </main>
+    );
+  }
 }
 
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles)(SignIn);
+const mapStateToProps = state =>{
+  const {email, password}=state.auth
+  return {email,password}
+}
+export default connect(mapStateToProps,{loginUser, signUser})(withStyles(styles)(SignIn))
+//export default withStyles(styles)(SignIn)

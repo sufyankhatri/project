@@ -14,7 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link  } from 'react-router-dom'
 //import Link from '@material-ui/core/Link';
-
+import {signUser} from '../actions/AuthActions'
+import {connect} from 'react-redux'
 const styles = theme => ({
   main: {
     width: 'auto',
@@ -47,8 +48,22 @@ const styles = theme => ({
   },
 });
 
-function SignUp(props) {
-  const { classes } = props;
+class SignUp extends React.Component {
+  state={
+    email:'',
+    password:''
+  }
+  onHandleChange=(event)=>{
+    this.setState({
+      [event.target.id]:event.target.value
+    })
+  }
+  onSignPressed=()=>{
+    const{email,password}= this.state
+    this.props.signUser(email,password)
+  }  
+  render(){
+  const { classes } = this.props;
 
   return (
     <main className={classes.main}>
@@ -63,11 +78,11 @@ function SignUp(props) {
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
+            <Input id="email" name="email" onChange={this.onHandleChange} autoComplete="email" autoFocus />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
+            <Input name="password" type="password" onChange={this.onHandleChange} id="password" autoComplete="current-password" />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="class">Class</InputLabel>
@@ -83,11 +98,12 @@ function SignUp(props) {
             label="Remember me"
           /> */}
           <Button
-            type="submit"
+          //  type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={this.onSignPressed}
           >
             Submit
           </Button>
@@ -95,10 +111,11 @@ function SignUp(props) {
       </Paper>
     </main>
   );
+        }
 }
 
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignUp);
+export default connect(null,{signUser})(withStyles(styles)(SignUp))
