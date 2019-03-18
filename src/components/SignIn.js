@@ -124,6 +124,7 @@ class SignIn extends React.Component {
             >
               Sign Up
           </Button>
+          
           </form>
         </Paper>
       </main>

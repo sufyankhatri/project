@@ -5,7 +5,8 @@ import{
 } from './types'
 
 import firebase from '../FirebaseConfig'
-
+import history from '../history'
+import {getUserData} from './UserAction'
 export const emailChanged=(text)=>{
     
     return {
@@ -24,10 +25,14 @@ export const passwordChanged = (text) => {
   };
   
 export const loginUser =(email,password)=>{
-    return ()=>{
+    return (dispatch)=>{
         firebase.auth().signInWithEmailAndPassword(email, password)
         .then(()=>{
-            console.log("login success")
+            const {currentUser} = firebase.auth()
+            const uid = {currentUser}
+            getUserData({uid},dispatch)
+            history.replace("/Profile")
+         
         })
         .catch((error)=>{
             console.log(error)
