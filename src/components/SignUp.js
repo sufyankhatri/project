@@ -47,7 +47,7 @@ const styles = theme => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
-  error:{
+  error: {
     color: 'red'
   }
 });
@@ -56,17 +56,18 @@ class SignUp extends React.Component {
   state = {
     firstName: '',
     lastName: '',
-    dob: '',
     email: '',
     password: '',
     cpassword: '',
     gpa: '',
     insti: "",
-    Ferror:false,
-    Lerror:false,
-    Gerror:false,
-    Perror:false,
-    Cerror:false
+    Ferror: false,
+    Lerror: false,
+    Gerror: false,
+    Perror: false,
+    Cerror: false,
+    Ierror:false,
+    Serror: ''
 
   }
   onHandleChange = (event) => {
@@ -76,134 +77,189 @@ class SignUp extends React.Component {
     })
   }
   onFirstNameChange = (event) => {
-    
-    if (event.target.value.length > 5) {
+
+    if (event.target.value.length > 8) {
       this.setState({
-        Ferror:true
+        Ferror: true
       })
     }
     else {
       this.setState({
-        Ferror:false
+        Ferror: false
+      })
+      this.setState({
+        [event.target.id]: event.target.value
       })
     }
   }
-  onLastNameChange= (event)=>{
-    if (event.target.value.length > 5) {
+  onLastNameChange = (event) => {
+    if (event.target.value.length > 8) {
       this.setState({
-        Lerror:true
+        Lerror: true
       })
     }
     else {
       this.setState({
-        Lerror:false
+        Lerror: false
+      })
+      this.setState({
+        [event.target.id]: event.target.value
       })
     }
   }
-  onPasswordChange=(event)=>{
-    if(event.target.value.length<6){
+  onPasswordChange = (event) => {
+    if (event.target.value.length < 6) {
       this.setState({
-        Perror:true
-       
+        Perror: true
+
       })
     }
-    else{
+    else {
       this.setState({
-        Perror:false,
-        password:event.target.value
+        Perror: false,
+
+      })
+      this.setState({
+        [event.target.id]: event.target.value
       })
     }
   }
 
-  onConfirmPasswordChange=(event)=>{
-    console.log(event.target.value)
-    console.log("password is",this.state.password)
-    if((event.target.value)!==( this.state.password)){
-      this.setState({
-        Cerror:true
-      })
-    }
-    else{
-      this.setState({
-        Cerror:false
-      })
-    }
-  }
-  
+  onConfirmPasswordChange = (event) => {
 
-  onGpaChange=(event)=>{
-    if(event.target.value>4){
+    if ((event.target.value) !== (this.state.password)) {
       this.setState({
-        Gerror:true
+        Cerror: true
       })
-  
     }
-    else{
+    else {
       this.setState({
-        Gerror:false
+        Cerror: false
+      })
+      this.setState({
+        [event.target.id]: event.target.value
       })
     }
   }
-  onInstituteChange=(event)=>{
-    console.log(event.target.value)
+
+
+  onGpaChange = (event) => {
+    if (event.target.value > 4) {
+      this.setState({
+        Gerror: true
+      })
+
+    }
+    else {
+      this.setState({
+        Gerror: false
+      })
+      this.setState({
+        [event.target.id]: event.target.value
+      })
+    }
+  }
+  onInstituteChange = (event) => {
+    if(event.target.value===""){
+      this.setState({
+        Ierror:true
+      })
+    }
+    else{
     this.setState({
-     insti:event.target.value
+      insti: event.target.value
     });
-    console.log(this.state.insti)
-    
+  }
   }
 
 
-  onSignPressed = () => {
-    const { email, password } = this.state
-    this.props.signUser(email, password)
-  }
-  
-  showFirstNameError=()=>{
-    const{classes}=this.props
-    if(this.state.Ferror){
-      console.log("hello")
-      return(
-        <InputLabel className={classes.error}>First Name should be less than 6 characters</InputLabel>   
+
+  showFirstNameError = () => {
+    const { classes } = this.props
+    if (this.state.Ferror) {
+
+      return (
+        <InputLabel className={classes.error}>First Name should be less than 8 characters</InputLabel>
       )
-      }
-    
+    }
+
   }
-  showPasswordError=()=>{
-    const{classes}= this.props
-    if(this.state.Perror){
-      return(
-        <InputLabel className={classes.error}>Password must be 6 characters long</InputLabel>
+  showPasswordError = () => {
+    const { classes } = this.props
+    if (this.state.Perror) {
+      return (
+        <InputLabel className={classes.error}>Password must be 8 characters long</InputLabel>
       )
     }
   }
 
-  showLastNameError=()=>{
-    const{classes}=this.props
-    if(this.state.Lerror){
-      console.log("hello")
-      return(
-        <InputLabel className={classes.error}>Last Name should be less than 6 characters</InputLabel>   
-      )
-      }
-    
-  }
-showGpaError=()=>{
-    const{classes}=this.props
-    if(this.state.Gerror){
-      return(
-        <InputLabel  className={classes.error}  >Gpa should be less than 4 </InputLabel>
+  showLastNameError = () => {
+    const { classes } = this.props
+    if (this.state.Lerror) {
+
+      return (
+        <InputLabel className={classes.error}>Last Name should be less than 6 characters</InputLabel>
       )
     }
-}
-showConfirmPasswordError(){
-  const{classes}=this.props
-  if(this.state.Cerror){
-    return(
-      <InputLabel className={classes.error} >Passwords are not same</InputLabel>
+
+  }
+  showGpaError = () => {
+    const { classes } = this.props
+    if (this.state.Gerror) {
+      return (
+        <InputLabel className={classes.error}  >Gpa should be less than 4 </InputLabel>
+      )
+    }
+  }
+  showConfirmPasswordError() {
+    const { classes } = this.props
+    if (this.state.Cerror) {
+      return (
+        <InputLabel className={classes.error} >Passwords are not same</InputLabel>
+      )
+    }
+  }
+  showInstituteError() {
+    const { classes } = this.props
+    if (this.state.Ierror) {
+      return (
+        <InputLabel className={classes.error}>Please enter institute <br></br></InputLabel>
+      )
+    }
+  }
+  onSignUpPressed = () => {
+    const { email, password, gpa, insti, firstName, lastName } = this.state
+    const { classes } = this.props
+    if (email === "" || password === "" || insti === "" || firstName === "" || lastName === "" || gpa === "") {
+
+      this.setState({
+        Serror: true
+      })
+    }
+    else {
+      this.setState({
+        Serror:false
+      })
+      console.log(email, password, gpa, insti, firstName, lastName)
+      this.props.signUser(email, password, gpa, insti, firstName, lastName)
+    }
+  }
+  ShowSignUpError = () => {
+    const { classes } = this.props
+    if (this.state.Serror) {
+      return (
+        <InputLabel className={classes.error}>Please Fill the form correctly</InputLabel>
+      )
+    }
+
+  }
+  showFirebaseSignError = () => {
+    const { classes } = this.props
+    return (
+      <InputLabel className={classes.error}>{this.props.error}</InputLabel>
     )
   }
-}
+
   render() {
     const { classes } = this.props;
 
@@ -220,12 +276,12 @@ showConfirmPasswordError(){
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="firstName">First Name</InputLabel>
-              <Input name="firstName" onChange={this.onFirstNameChange} error={this.state.Ferror}/>
+              <Input id="firstName" name="firstName" onChange={this.onFirstNameChange} error={this.state.Ferror} />
             </FormControl>
             {this.showFirstNameError()}
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="last name">Last Name</InputLabel>
-              <Input name="lastName" onChange={this.onLastNameChange} error={this.state.Lerror}/>
+              <Input id="lastName" name="lastName" onChange={this.onLastNameChange} error={this.state.Lerror} />
             </FormControl>
             {this.showLastNameError()}
             <FormControl margin="normal" required fullWidth>
@@ -244,37 +300,39 @@ showConfirmPasswordError(){
             {this.showConfirmPasswordError()}
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="gpa">GPA</InputLabel>
-              <Input name="gpa" type="number" onChange={this.onGpaChange}/>
+              <Input id="gpa" name="gpa" type="number" onChange={this.onGpaChange} />
             </FormControl>
             {this.showGpaError()}
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="institute">Institute</InputLabel>
-              <Input name="institute" />
-            </FormControl>
             <FormControl margin="normal" required fullWidth >
-            <NativeSelect
-              native
-              onChange={this.onInstituteChange}
-              value={this.state.insti}
-              name="institute"
-              id="insti"
-            >
-              <option value="ned"> ned</option>
-              <option value="ssuet">ssuet</option>
-              <option value="maju">maju</option>
-            </NativeSelect>
+              <NativeSelect
+                native
+                 onChange={this.onInstituteChange}
+                value={this.state.insti}
+                name="institute"
+                id="insti"
+               // onClick={this.onInstituteChange}
+              // input={<Input name="institute"/>}
+              >
+                <option value="">Select Institute</option>
+                <option value="ned"> ned</option>
+                <option value="ssuet">ssuet</option>
+                <option value="maju">maju</option>
+              </NativeSelect>
             </FormControl>
             {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           /> */}
+            {this.showInstituteError()}
+            {this.ShowSignUpError()}
+            {this.showFirebaseSignError()}
             <Button
               //  type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={this.onSignPressed}
+              onClick={this.onSignUpPressed}
             >
               Submit
           </Button>
@@ -288,5 +346,8 @@ showConfirmPasswordError(){
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-export default connect(null, { signUser })(withStyles(styles)(SignUp))
+const mapStateToProps = (state) => {
+  const { error } = state.auth
+  return { error }
+}
+export default connect(mapStateToProps, { signUser })(withStyles(styles)(SignUp))
