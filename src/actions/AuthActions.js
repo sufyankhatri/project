@@ -1,7 +1,8 @@
 import{
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
-    SIGN_FAILED
+    SIGN_FAILED,
+    LOGIN_SUCCESS
 } from './types'
 
 import firebase from '../FirebaseConfig'
@@ -30,7 +31,10 @@ export const loginUser =(email,password)=>{
         .then(()=>{
             const {currentUser} = firebase.auth()
             const uid = {currentUser}
-            getUserData({uid},dispatch)
+            dispatch({
+                type:LOGIN_SUCCESS
+            })
+            getUserData(dispatch)
             history.replace("/Profile")
          
         })
